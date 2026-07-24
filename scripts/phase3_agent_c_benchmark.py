@@ -132,7 +132,7 @@ def main():
             tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
             if tokenizer.pad_token is None: tokenizer.pad_token = tokenizer.eos_token
             eos_id = int(tokenizer.eos_token_id or 0)
-            model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, device_map=DEVICE, trust_remote_code=True)
+            model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, device_map="auto", trust_remote_code=True)
             model.eval()
         except Exception as e:
             print(f"Failed to load {model_name}: {e}")
