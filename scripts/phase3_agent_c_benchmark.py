@@ -104,7 +104,7 @@ def load_data():
         ordinary_ex.append({"id": f"ord_{i}", "category": "ordinary", "question": q})
         
     random.seed(42)
-    sample_tool = random.sample(tool_ex, min(25, len(tool_ex)))
+    sample_tool = tool_ex
     sample_ord = ordinary_ex
     return sample_tool, sample_ord
 
