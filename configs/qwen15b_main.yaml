@@ -1,0 +1,23 @@
+experiment_name: "qwen15b_main"
+model_name_or_path: "Qwen/Qwen2.5-1.5B-Instruct"
+device: "cuda"
+torch_dtype: "float16"
+max_new_tokens: 128
+temperature: null
+do_sample: false
+seed: 42
+
+cache_conditions:
+  - "full"
+  - "offloaded"
+  - "quanto_int4"
+  - "quanto_int2"
+
+context_lengths:
+  - 512
+  - 1024
+  - 2048
+
+subset_size: 150
+warmup_runs: 3
+save_dir: "runs"

@@ -1,0 +1,34 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{acl2023}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{Reliability Cliffs in Low-Bit KV-Cache Quantization: \\ A Controlled Evaluation of Language Generation and Tool Use}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Recent advances in LLMs rely on efficient KV-cache compression to mitigate memory bottlenecks. However, evaluating these methods typically focuses on standard text generation, overlooking the strict structural requirements of tool-use. We identify a severe ``reliability cliff'' at 4-bit quantization, where ordinary language generation remains coherent, but structured tool-use collapses entirely (0\% valid rate). Through targeted ablation studies, we localize this failure precisely to the quantization of Key projections in the earliest layers of the network.
+\end{abstract}
+
+\section{Introduction}
+Long-context generation is bottlenecked by KV-cache memory. While low-bit quantization (e.g., 4-bit) preserves semantic coherence, its impact on rigid structural output formats (e.g., JSON tool calls) is under-explored. In this paper, we demonstrate that 4-bit KV-cache quantization induces a catastrophic collapse in tool-use validity, even when perplexity remains stable.
+
+\section{Methodology}
+We evaluate Qwen2.5 (0.5B, 1.5B) and SmolLM2 (1.7B) using Dynamic Cache and HQQ quantization (8-bit, 4-bit). We assess performance across 210 prompts evaluating both tool-use syntax and ordinary language coherence across context lengths from 512 to 2048.
+
+\section{Results}
+\subsection{The Reliability Cliff}
+We observe that Qwen2.5-1.5B maintains 100\% tool-use validity under 8-bit quantization but collapses to 0\% under 4-bit quantization. Strikingly, ordinary text generation remains highly coherent under the same 4-bit regime.
+
+\subsection{Localization Analysis}
+Through controlled K/V ablation and layer block ablation, we identify the precise locus of failure. Quantizing the Value states has no impact on tool validity. The collapse is driven entirely by Key quantization in the earliest network layers (blocks 0-6).
+
+\section{Conclusion}
+Our findings highlight a fundamental disconnect between semantic coherence and structural reliability in quantized KV-caches, and point towards mixed-precision Key-Value caching as a robust solution for agentic LLMs.
+
+\end{document}

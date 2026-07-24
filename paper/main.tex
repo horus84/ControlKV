@@ -1,0 +1,53 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+
+\title{Does KV-Cache Quantization Preserve Tool Decisions?}
+
+\author{Anonymous ACL ARR Submission \\
+  Primary Area: Efficient Methods for NLP \\
+  Secondary Areas: LLM Agents; Resources and Evaluation \\
+  \texttt{anonymous@example.com}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Quantizing the Key-Value (KV) cache in Transformer language models significantly reduces GPU memory footprint and latency during long-context inference. However, whether aggressive low-bit KV-cache quantization preserves structured tool calling decisions remains unexamined. In this study, we systematically evaluate two instruction-tuned language models (\texttt{Qwen2.5-1.5B-Instruct} and \texttt{Qwen2.5-3B-Instruct}) under four cache conditions (\texttt{DynamicCache}, \texttt{OffloadedCache}, Quanto 4-bit, and Quanto 2-bit) across target context lengths (512, 1024, and 2048 tokens). Utilizing a 150-example subset of the Berkeley Function Calling Leaderboard (BFCL), we track ground-truth correctness retention, tool name agreement, argument exact match, per-field accuracy, and GPU memory/latency trade-offs.
+\end{abstract}
+
+\section{Introduction}
+Structured tool calling is a foundational capability for Large Language Model (LLM) agents. When deployed in time-critical agentic pipelines, reducing inference latency and memory consumption is paramount. Key-Value (KV) cache quantization compresses memory footprint, but its impact on fine-grained structured JSON decisions requires rigorous evaluation.
+
+\section{Experimental Methodology}
+We conduct a controlled intervention study evaluating:
+\begin{enumerate}
+    \item \textbf{Models}: Qwen2.5-1.5B-Instruct and Qwen2.5-3B-Instruct.
+    \item \textbf{Cache Conditions}: Standard full-precision \texttt{DynamicCache}, \texttt{OffloadedCache} (lossless control), Quanto 4-bit, and Quanto 2-bit.
+    \item \textbf{Context Scaling}: Target context lengths of 512, 1024, and 2048 tokens scaled via deterministic token-level neutral padding.
+    \item \textbf{Decoding}: Greedy deterministic decoding ($T=0$, \texttt{do\_sample=False}, \texttt{max\_new\_tokens=128}).
+\end{enumerate}
+
+\section{Results and Analysis}
+\input{tables/main_results.tex}
+
+\section{Limitations}
+\begin{itemize}
+    \item Evaluation is restricted to single-turn function calling on Qwen2.5 model architectures.
+    \item Quantization modes are limited to Quanto 4-bit and 2-bit integer quantization.
+    \item Experiments are executed on single GPU hardware (NVIDIA RTX 4050 6GB VRAM).
+\end{itemize}
+
+\section{Ethics Statement and Responsible NLP}
+All models, datasets, and frameworks utilized in this work are publicly available under open licenses. Generative AI assistance was strictly limited to code formatting and scaffolding in compliance with ACL ARR guidelines.
+
+\bibliography{references}
+\end{document}

@@ -1,0 +1,7 @@
+{
+  "python.defaultInterpreterPath": "C:\\Users\\linseed21\\anaconda3\\python.exe",
+  "python.analysis.extraPaths": [
+    "C:\\Users\\linseed21\\anaconda3\\Lib\\site-packages",
+    "c:\\Users\\linseed21\\Desktop\\ControlKV"
+  ]
+}
