@@ -1,0 +1,28 @@
+{
+  "description": "Schema for progress.json tracking benchmark status and checkpointing.",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["in_progress", "completed", "interrupted"]
+    },
+    "completed_cells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "model": {"type": "string"},
+          "context_length": {"type": "integer"},
+          "condition": {"type": "string"},
+          "timestamp": {"type": "string", "format": "date-time"}
+        },
+        "required": ["model", "context_length", "condition", "timestamp"]
+      }
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["status", "completed_cells", "last_updated"]
+}

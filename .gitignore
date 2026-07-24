@@ -17,3 +17,13 @@ results/*/
 !results/.gitkeep
 .hf_cache/
 .cache/
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Outputs
+cache/
+*.log
+temporary_logs/
+archive/
