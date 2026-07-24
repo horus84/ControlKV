@@ -119,10 +119,7 @@ def main():
     out_file = os.path.join(SAVE_DIR, "benchmark_results.jsonl")
     with open(out_file, "w") as f: pass
 
-    try:
-        from transformers.cache_utils import HQQQuantizedCache
-    except ImportError:
-        HQQQuantizedCache = None
+    from transformers.cache_utils import QuantizedCache
 
     for model_name in MODELS:
         print(f"\n======================================")
@@ -162,10 +159,10 @@ def main():
             for cond in CONDITIONS:
                 def get_cache():
                     if cond == "dynamic": return DynamicCache()
-                    if "hqq" in cond and HQQQuantizedCache is not None:
+                    if "hqq" in cond:
                         bits = int(cond.split("_")[1].replace("bit",""))
-                        return HQQQuantizedCache(config=model.config, nbits=bits, axis_key=0, axis_value=0, q_group_size=64, residual_length=128)
-                    return DynamicCache()
+                        return QuantizedCache(backend="hqq", config=model.config, nbits=bits, q_group_size=64, residual_length=128)
+                    raise ValueError(f"Unknown cache condition: {cond}")
                 
                 print(f"     Condition: {cond}")
                 
